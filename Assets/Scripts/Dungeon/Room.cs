@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Dungeon
 {
     [Serializable]
     public class Room
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public Vector2Int Position { get; private set; }
-        public int[,] Layout { get; private set; }
+        public int width;
+        public int height;
+        public string[] layout;
+        
+        public Vector2Int Position;
 
         public Room(int width, int height, Vector2Int position)
         {
-            Width = width;
-            Height = height;
+            this.width = width;
+            this.height = height;
             Position = position;
         }
 
         public bool Contains(Vector2Int point)
         {
-            return point.x >= Position.x && point.x < Position.x + Width &&
-                   point.y >= Position.y && point.y < Position.y + Height;
+            return point.x >= Position.x && point.x < Position.x + width &&
+                   point.y >= Position.y && point.y < Position.y + height;
         }
         
         public bool Contains(Room other)
         {
             return other.Position.x >= Position.x && 
-                   other.Position.x + other.Width <= Position.x + Width &&
+                   other.Position.x + other.width <= Position.x + width &&
                    other.Position.y >= Position.y && 
-                   other.Position.y + other.Height <= Position.y + Height;
+                   other.Position.y + other.height <= Position.y + height;
         }
+        
+        
     
         
     

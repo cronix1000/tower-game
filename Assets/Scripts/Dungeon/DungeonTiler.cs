@@ -9,11 +9,11 @@ namespace Dungeon
         public class TileType
         {
             public string name;
+            public Directions direction;
             public TileBase tile;
         }
 
         public Tilemap wallTilemap;
-
         public TileType[] wallTiles;
 
         public void GenerateWalls(bool[,] wallGrid, int width, int height)
@@ -28,7 +28,10 @@ namespace Dungeon
                     {
                         Vector3Int position = new Vector3Int(x, y, 0);
                         TileBase selectedTile = GetWallTile(wallGrid, x, y, width, height);
-                        wallTilemap.SetTile(position, selectedTile);
+                        if (selectedTile != null)
+                        {
+                            wallTilemap.SetTile(position, selectedTile);
+                        }
                     }
                 }
             }
@@ -54,48 +57,48 @@ namespace Dungeon
             bool se = GetWall(1, -1);
             bool sw = GetWall(-1, -1);
 
-            // Straight walls
-            if (n && !s && !e && !w) return GetTile("bottom");
-            if (!n && s && !e && !w) return GetTile("top");
-            if (!n && !s && e && !w) return GetTile("left");
-            if (!n && !s && !e && w) return GetTile("right");
+            // Check for straight walls first
+            if (n && !s && !e && !w) return GetTile(Directions.North);
+            if (!n && s && !e && !w) return GetTile(Directions.South);
+            if (!n && !s && e && !w) return GetTile(Directions.East);
+            if (!n && !s && !e && w) return GetTile(Directions.West);
 
-            // Corners
-            if (!n && !w && e && s) return GetTile("topLeft");
-            if (!n && !e && w && s) return GetTile("topRight");
-            if (!s && !w && e && n) return GetTile("bottomLeft");
-            if (!s && !e && w && n) return GetTile("bottomRight");
+            // Check for corners
+            if (n && w && !s && !e) return GetTile(Directions.NorthWest);
+            if (n && e && !s && !w) return GetTile(Directions.NorthEast);
+            if (s && w && !n && !e) return GetTile(Directions.SouthWest);
+            if (s && e && !n && !w) return GetTile(Directions.SouthEast);
 
-            // Complex corners with diagonals
-            if (!nw && n && w) return GetTile("topRight");
-            if (!ne && n && e) return GetTile("topLeft");
-            if (!sw && s && w) return GetTile("bottomRight");
-            if (!se && s && e) return GetTile("bottomLeft");
+            // Check for T-junctions and crosses
+            if (n && s && !e && !w) return GetTile(Directions.North); // Vertical wall
+            if (!n && !s && e && w) return GetTile(Directions.East);  // Horizontal wall
 
-            // Fallback
-            return GetTile("full");
+            // Default case (single wall tile or base tile)
+            return GetTile(Directions.Base);
         }
 
-        TileBase GetTile(string name)
+        TileBase GetTile(Directions direction)
         {
             foreach (var tile in wallTiles)
             {
-                if (tile.name.ToLower() == name.ToLower())
+                if (tile.direction == direction)
                     return tile.tile;
             }
+            Debug.LogWarning($"No tile found for direction: {direction}");
             return null;
         }
     }
 
     public enum Directions
     {
-        N,
-        NW,
-        NE,
-        S,
-        SW,
-        SE,
-        W,
-        E
+        North,
+        South,
+        East,
+        West,
+        NorthWest,
+        NorthEast,
+        SouthWest,
+        SouthEast,
+        Base
     }
 }
