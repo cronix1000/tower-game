@@ -7,23 +7,18 @@ public class BasicExplorationStrategy : StrategyBase
 {
     public override Vector2Int DecideNextMove(Vector2Int currentPosition, AIAgent agent)
     {
-        // Use the manager's frontier selection as default
         List<Vector2Int> frontier = explorationManager.GetFrontierTiles();
         if (frontier.Count > 0)
         {
-            // Simple: Move to the first frontier tile
-            // You could implement pathfinding (A*) here for better results
             return frontier[0];
         }
 
-        // If no frontier, just move to an adjacent unvisited tile
         List<Vector2Int> validMoves = GetValidAdjacentMoves(currentPosition);
         if (validMoves.Count > 0)
         {
-            return validMoves[0]; // Simplest choice
+            return validMoves[0]; 
         }
 
-        // No valid moves, stay put
         return currentPosition;
     }
 

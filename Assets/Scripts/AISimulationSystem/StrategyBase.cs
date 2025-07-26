@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace AISimulationSystem
 {
-    // Assuming this is the namespace for AIAgent/Manager
-
     public abstract class StrategyBase : IAIMovementStrategy
     {
         protected AIAgent agent;
@@ -20,14 +18,14 @@ namespace AISimulationSystem
         }
 
         public abstract Vector2Int DecideNextMove(Vector2Int currentPosition, AIAgent agent);
-        public virtual void OnTileLanded(Vector2Int tilePosition, AIAgent agent) { /* Default empty */ }
+        public virtual void OnTileLanded(Vector2Int tilePosition, AIAgent agent) {  }
         public abstract string GetStrategyName();
     }
     public interface IAIMovementStrategy
     {
         Vector2Int DecideNextMove(Vector2Int currentPosition, AIAgent agent);
-        void OnTileLanded(Vector2Int tilePosition, AIAgent agent); // Optional callback
-        void Initialize(AIAgent agent); // Optional initialization
-        string GetStrategyName(); // For debugging/stats
+        void OnTileLanded(Vector2Int tilePosition, AIAgent agent); 
+        void Initialize(AIAgent agent); 
+        string GetStrategyName();
     }
 }
