@@ -14,7 +14,6 @@ namespace AISimulationSystem
         [Header("Debug")]
         public bool showGizmos = true;
 
-        // Actor state
         protected Vector2Int startPosition;
         protected List<Vector2Int> visitedTiles = new List<Vector2Int>();
         protected List<Vector2Int> visibleTiles = new List<Vector2Int>();
@@ -24,6 +23,7 @@ namespace AISimulationSystem
 
         protected virtual void Start()
         {
+
             InitializeComponents();
             InitializeActor();
         }
@@ -58,8 +58,6 @@ namespace AISimulationSystem
 
         protected virtual void InitializeActor()
         {
-            startPosition = MapManager.Instance?.GetStartPostion() ?? Vector2Int.zero;
-            actorMover.Initialize(startPosition);
             UpdateVisibility();
         }
 
@@ -69,14 +67,14 @@ namespace AISimulationSystem
             UpdateVisibility();
             OnTileLanded?.Invoke(position);
             
-            // Handle tile interactions
             HandleTileInteraction(position);
         }
 
-        protected virtual void HandleTileInteraction(Vector2Int position)
+        public virtual void HandleTileInteraction(Vector2Int position)
         {
             GameObject tile = MapManager.Instance?.GetGameObjectOnTile(position);
-            if (tile != null && tile.TryGetComponent(out IInteractable interactable))
+            Interactable interactable = tile?.GetComponent<Interactable>();
+            if(interactable != null)
             {
                 interactable.Interact(this);
             }
@@ -89,7 +87,10 @@ namespace AISimulationSystem
                 visibleTiles.Clear();
                 Vector3Int origin = new Vector3Int(actorMover.CurrentPosition.x, actorMover.CurrentPosition.y, 0);
                 List<Vector3Int> visibleTiles3D = new List<Vector3Int>();
-                visibilityCalculator.Compute(origin, -1, visibleTiles3D);
+                
+                // Use a reasonable vision range (e.g., 10 tiles) instead of unlimited
+                int visionRange = MapManager.Instance != null ? (int)MapManager.Instance.visionRange : 10;
+                visibilityCalculator.Compute(origin, visionRange, visibleTiles3D);
                 
                 // Convert Vector3Int to Vector2Int
                 foreach (Vector3Int tile3D in visibleTiles3D)

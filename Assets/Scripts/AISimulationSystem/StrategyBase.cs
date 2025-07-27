@@ -7,13 +7,11 @@ namespace AISimulationSystem
     public abstract class StrategyBase : IAIMovementStrategy
     {
         protected AIAgent agent;
-        protected AIExplorationManager explorationManager;
         protected MapManager mapManager;
 
         public virtual void Initialize(AIAgent agent)
         {
             this.agent = agent;
-            this.explorationManager = AIExplorationManager.Instance;
             this.mapManager = MapManager.Instance;
         }
 

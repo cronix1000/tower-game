@@ -41,10 +41,6 @@ namespace Dungeon
         private void CreateStartAndGoal()
         {
             MapManager.Instance.DungeonCreated();
-            
-            MapManager.Instance.SetStartPosition();
-            
-            MapManager.Instance.SetGoalPosition();
         }
 
         private void CreateRooms()
@@ -85,7 +81,6 @@ namespace Dungeon
             tilemapVisualizer.PaintFloorTiles(floor);
             WallGenerator.CreateWalls(floor, tilemapVisualizer);
             CreateStartAndGoal();
-
         }
 
         private HashSet<Vector2Int> CreateRoomsRandomly(List<BoundsInt> roomsList)

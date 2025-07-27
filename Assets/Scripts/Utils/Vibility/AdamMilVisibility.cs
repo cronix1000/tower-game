@@ -224,9 +224,9 @@ using UnityEngine;
           case 6: nx += y; ny += x; break;
           case 7: nx += x; ny += y; break;
         }
-
-        return false; // Replace with actual logic to check if the tile at (nx, ny) blocks light
-        // return MapManager.instance.ObstacleMap.HasTile(new Vector3Int((int)nx, (int)ny, 0));
+        
+        // Fallback - assume out of bounds blocks light
+        return true;
       }
 
       void SetVisible(uint x, uint y, uint octant, Vector3Int origin, List<Vector3Int> fieldOfView)

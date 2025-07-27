@@ -8,12 +8,12 @@ namespace AISimulationSystem
     /// Interface for interactable objects in the AI simulation system.
     /// </summary>
 
-public interface IInteractable
+public abstract class Interactable : MonoBehaviour
 {
     /// <summary>
     /// Interact with the AI agent.
     /// </summary>
     /// <param name="agent">The AI agent interacting with this object.</param>
-    void Interact(AIAgent agent);
+    public abstract void Interact(Actor agent);
 }
 }
