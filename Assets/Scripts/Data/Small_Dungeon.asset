@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Small_Dungeon
   m_EditorClassIdentifier: 
   iterations: 10
-  walkLength: 10
+  walkLength: 5
   startRandomlyEachIteration: 1

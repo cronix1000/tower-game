@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Dungeon;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils.Vibility;
@@ -18,6 +19,8 @@ namespace AISimulationSystem
         private List<Vector2Int> visitedThisRun = new List<Vector2Int>();
         private List<Vector2Int> pathToDraw = new List<Vector2Int>();
         private List<Vector2Int> frontierTiles = new List<Vector2Int>();
+        public bool isDead;
+        public Room currentRoom;
 
         // AI-specific events
         public event Action OnGoalReached;
@@ -142,7 +145,7 @@ public void Initialize()       {
 
         private IEnumerator ExplorationLoop()
         {
-            while (!hasReachedGoal && MapManager.Instance != null)
+            while (!hasReachedGoal && MapManager.Instance)
             {
                 yield return new WaitForSeconds(0.1f / actorMover.moveSpeed);
                 if (!IsMoving())
